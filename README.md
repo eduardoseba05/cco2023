@@ -1,2 +1,2 @@
 # projeto individual
-mensagem feita na maquina local
+site para curiosidades e avalição de rendimento dos seus jogos como goleiro! 
