@@ -1,2 +1,2 @@
-# cco2023
+# projeto individual
 mensagem feita na maquina local
