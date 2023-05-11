@@ -28,7 +28,6 @@ body {
 
 .navBar {
     display: flex;
-    color: #000000;
     list-style: none;
     width: 700px;
     justify-content: space-between;
@@ -43,7 +42,6 @@ body {
     align-items: center;
     width: 300px;
     height: 40px;
-    /**/
 }
 
 .banner {
@@ -80,8 +78,16 @@ body {
     height: 200px;
     align-items: center;
     justify-content: center;
+    
+}
+
+.div_img {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
     padding: 20px;
-    border: solid rgb(140, 46, 194) 3px;
+    border: solid rgb(140, 46, 194) 3px ;
     border-radius: 6px;
 }
 
