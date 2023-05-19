@@ -6,46 +6,6 @@ body {
     margin: 0;
 }
 
-.header {
-    display: flex;
-    width: 100%;
-    background-color: rgb(140, 46, 194);
-    border-bottom: solid 3px #c7c7c7;
-    align-items: center;
-}
-
-.container {
-    display: flex;
-    width: 100%;
-    margin: auto;
-}
-
-.header .container {
-    display: flex;
-    justify-content: space-evenly;
-    align-items: center;
-}
-
-.navBar {
-    display: flex;
-    color: #000000;
-    list-style: none;
-    width: 700px;
-    justify-content: space-between;
-    align-items: center;
-    justify-items: center;
-    padding: 20px;
-    
-}
-
-.pesquisa {
-    display: flex;
-    justify-content: space-evenly;
-    align-items: center;
-    width: 300px;
-    height: 40px;
-}
-
 li {
     margin: 20px;
 }
@@ -64,7 +24,13 @@ a:hover {
     transition: 0.5s;
 }
 
-.banner{
+.navBar img{
+    display: flex;
+    width: 50px;
+    height: 50px;
+    }
+
+.banner {
     display: flex;
     width: 100%;
     height: 100%;
@@ -73,13 +39,13 @@ a:hover {
     margin: 50px 0;
 }
 
-.banner .container{
+.banner .container {
     display: flex;
     padding: auto;
     justify-content: space-evenly;
     align-items: center;
     height: fit-content;
-    width: fit-content ;
+    width: fit-content;
     border: solid rgb(140, 46, 194) 3px;
     border-radius: 6px;
 }
@@ -93,9 +59,28 @@ a:hover {
     border-radius: 5px;
 }
 
+.form h1{
+    border: solid  whitesmoke 2px;
+    border-radius: 6px;
+}
+
 .label {
+    border: solid  whitesmoke 2px;
+    border-radius: 6px;
     font-size: 20px;
     margin: 0;
+}
+
+.novidade {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+h3 {
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 input {
@@ -110,20 +95,13 @@ button {
     background-color: rgb(140, 46, 194);
     color: white;
     width: 100px;
-    padding: 10px;
     border-radius: 5px;
-    border: 0;    
+    border: 0;
 }
 
-.pesquisa input{
+.pesquisa input {
     display: flex;
     border: solid black 3px;
     border-radius: 6px;
 }
 
-.footer {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background-color: rgb(140, 46, 194);
-}
