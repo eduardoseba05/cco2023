@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PERFIL</title>
+    <link rel="stylesheet" href="css/perfil.css">
+    <link rel="stylesheet" href="css/header_footer.css">
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<link rel="stylesheet" href="../css/dashboard.css">
+
+    <script src=""></script>
+</head>
+
+<body>
+    <div class="header">
+        <div class="container">
+            <ul class="navBar">
+                <img src="assets/luva_logo-removebg-preview.png" alt="luva">
+                <li><a href="index.html">GOLEIROS!</a></li>
+                <l1><a href="nosso_produto.html">CURIOSIDADES!</a></l1>
+                <l1><a href="quem_somos.html">QUEM SOU?</a></l1>
+                <l1><a href="desempenho.html">DESEMPENHO!</a></l1>
+                <!-- <l1><a href="dashboard/dashboard.html">GRÁFICO DE DESEMPENHO!</a></l1> -->
+                <l1><a href="perfil.html">PERFIL!</a></l1>
+            </ul>
+        </div>
+    </div>
+
+    <div class="geral">
+
+        <div class="banner2"> <!--.banner>.container>p*h1-->
+            <div class="container2">
+                <div class="form2">
+                    <h1>LOGIN!</h1>
+                    <h2 class="label2">E-mail</h2>
+                    <input id="ipt_email" placeholder="insira seu E-MAIL">
+                    <h2 class="label2">SENHA:</h2>
+                    <input id="ipt_senha" placeholder="insira sua SENHA">
+                    <button onclick="entrar()">ENTRAR</button>
+                    <div id="mensagem_erro"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="banner2"> <!--.banner>.container>p*h1-->
+            <div class="container2">
+                <div class="form2">
+                    <h1>CADASTRO!</h1>
+                    <h2 class="label">E-mail</h2>
+                    <input id="ipt_email2" placeholder="insira seu E-MAIL">
+                    <h2 class="label">SENHA:</h2>
+                    <input id="ipt_senha2" placeholder="insira sua SENHA">
+                    <button onclick="cadastrar()">CADASTRAR</button>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <div id="graf" class="grafico" style="display: none;">
+        <canvas id="myChart" style="display:flex; margin: 100px;"></canvas>
+      </div>
+      <script src="../js/dashboard.js"></script>
+
+    <div class="footer">
+        <h1>NÓS SOMOS GOLEIROS!!!</h1>
+    </div>
+
+</body>
+
+</html>
+
+<script>
+
+    function entrar() {
+
+        var email = ipt_email.value;
+        var senha = ipt_senha.value;
+
+        if (email == "" || senha == "") {
+
+            mensagem_erro.innerHTML = "(Todos os campos em branco)";
+            return false;
+        }
+
+        console.log("FORM LOGIN: ", email);
+        console.log("FORM SENHA: ", senha);
+
+        fetch("/usuarios/autenticar", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                emailServer: email,
+                senhaServer: senha
+            })
+        }).then(function (resposta) {
+            console.log("ESTOU NO THEN DO entrar()!")
+
+            if (resposta.ok) {
+                console.log(resposta);
+
+                resposta.json().then(json => {
+                    console.log(json);
+                    console.log(JSON.stringify(json));
+                    sessionStorage.email = json.email;
+                    sessionStorage.senha = json.senha;
+                    
+
+                    /* setTimeout(function () {
+                        window.location = "./dashboard/cards.html";
+                    }, 1000); // apenas para exibir o loading */
+
+                });
+
+                graf.style.display = "block";
+
+            } else {
+
+                console.log("Houve um erro ao tentar realizar o login!");
+
+                resposta.text().then(texto => {
+                    console.error(texto);
+                    finalizarAguardar(texto);
+                });
+            }
+
+        }).catch(function (erro) {
+            console.log(erro);
+        })
+
+        return false;
+    }
+/* cadastrar */
+    function cadastrar() {
+        var email = ipt_email2.value
+        var senha = ipt_senha2.value
+
+        if (email == "" || senha == "" || senha < 5 || email.indexOf("@") == -1 || email.indexOf(".") == -1) {
+            alert("o email ou senha está vazio ou o email está incorreto e deve conter '@' e '.' ou a senha possui menos de 5 caracteres")
+        } else {
+           
+
+            // Enviando o valor da nova input
+            fetch("/usuarios/cadastrar", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    // crie um atributo que recebe o valor recuperado aqui
+                    // Agora vá para o arquivo routes/usuario.js
+        
+                    emailServer: email,
+                    senhaServer: senha
+                })
+            }).then(function (resposta) {
+        
+                console.log("resposta: ", resposta);
+        
+                if (resposta.ok) {
+
+                    alert("Cadastro realizado com sucesso!")
+
+                } else {
+                    throw ("Houve um erro ao tentar realizar o cadastro!");
+                }
+            }).catch(function (resposta) {
+                console.log(`#ERRO: ${resposta}`);
+               
+            });
+        
+            return false;
+        }
+
+    }
+
+
+
+</script>
