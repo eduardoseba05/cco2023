@@ -1,0 +1,109 @@
+* {
+    font-family: Arial;
+}
+
+body {
+    margin: 0;
+}
+
+li {
+    margin: 20px;
+}
+
+a {
+    text-decoration: none;
+    color: black;
+    border: solid black 2px;
+    padding: 3px;
+    border-radius: 6px;
+}
+
+a:hover {
+    letter-spacing: 2px;
+    font-size: 18px;
+    transition: 0.5s;
+}
+
+.navBar img{
+    display: flex;
+    width: 100px;
+    height: 100px;
+    }
+
+.banner{
+    display: flex;
+    background-color: whitesmoke;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    width: 100%;
+    padding: 20px 0 50px 0;
+}
+
+.banner .container{
+    display: flex;
+    width: 100%;
+    height: 100%;
+    justify-content: center;
+    align-items: center;   
+}
+
+.banner .container .img{
+display: flex;
+width: 100%;
+justify-content: center;
+align-items: center;
+flex-direction: column;
+}
+
+.h1 {
+    display: flex;
+    width: 100%;
+    height: 100%;
+    align-items: center;
+    justify-content: center;
+    margin-top: 0;
+    flex-direction: column;
+    background-color: whitesmoke;
+    }
+
+.h3{
+    display: flex;
+    width: 100%;
+    height: 100%;
+    align-items: center;
+    justify-content: center;
+    margin-top: 0;
+    flex-direction: column;
+    background-color: whitesmoke;
+}
+
+
+.img img {
+    display: flex;
+    width: 200px;
+    height: 200px;
+    align-items: center;
+    justify-content: center;
+    border: solid rgb(140, 46, 194) 3px;
+    border-radius: 6px;
+    margin-right: 50px;
+}
+
+a {
+    text-decoration: none;
+    color: black;
+    border: solid black 2px;
+    padding: 3px;
+    border-radius: 6px;
+}
+
+a:hover {
+    letter-spacing: 2px;
+    font-size: 18px;
+    transition: 0.5s;
+}
+
+#desempenho {
+    display: none;
+}
