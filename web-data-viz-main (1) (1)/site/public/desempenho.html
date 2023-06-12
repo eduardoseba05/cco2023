@@ -62,18 +62,21 @@
 
 </html>
 <script>
+
+    
 var fkCadastro = sessionStorage.idCadastro;
 let proximaAtualizacao;
 
 function obterDadosGrafico() {
+    fkCadastro = sessionStorage.idCadastro;
 
 if (proximaAtualizacao != undefined) {
     clearTimeout(proximaAtualizacao);
 }
 
-fetch(`/medidas/ultimas`, { cache: 'no-store' }).then(function (response) {
-    if (response.ok) {
-        response.json().then(function (resposta) {
+fetch(`/medidas/ultimas/${fkCadastro}`).then(function (resposta) {
+    if (resposta.ok) {
+        resposta.json().then(function (resposta) {
             console.log(`Dados recebidos: ${JSON.stringify(resposta)}`);
             resposta.reverse();
 
@@ -90,6 +93,7 @@ fetch(`/medidas/ultimas`, { cache: 'no-store' }).then(function (response) {
 }
 
     function plotarGrafico(resposta) {
+        fkCadastro = sessionStorage.idCadastro;
 
         console.log('iniciando plotagem do gráfico...');
 

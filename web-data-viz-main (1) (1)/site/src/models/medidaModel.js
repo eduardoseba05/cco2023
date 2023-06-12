@@ -1,13 +1,13 @@
 var database = require("../database/config");
 
-function buscarUltimasMedidas() {
+function buscarUltimasMedidas(fkCadastro) {
 
     instrucaoSql = ''
 
     if (process.env.AMBIENTE_PROCESSO == "producao") {
-        instrucaoSql = `select * from jogos order by idJogos desc; `;
+        instrucaoSql = `select * from jogos where fkCadastro = ${fkCadastro} order by idJogos desc; `;
     } else if (process.env.AMBIENTE_PROCESSO == "desenvolvimento") {
-        instrucaoSql = `select * from jogos order by idJogos desc;`;
+        instrucaoSql = `select * from jogos where fkCadastro = ${fkCadastro} order by idJogos desc;`;
     } else {
         console.log("\nO AMBIENTE (produção OU desenvolvimento) NÃO FOI DEFINIDO EM app.js\n");
         return
@@ -17,15 +17,15 @@ function buscarUltimasMedidas() {
     return database.executar(instrucaoSql);
 }
 
-function buscarMedidasEmTempoReal() {
+function buscarMedidasEmTempoReal(fkCadastro) {
 
     instrucaoSql = ''
 
     if (process.env.AMBIENTE_PROCESSO == "producao") {
-        instrucaoSql = `select * from jogos order by idJogos desc;`;
+        instrucaoSql = `select * from jogos where fkCadastro = ${fkCadastro} order by idJogos desc;`;
 
     } else if (process.env.AMBIENTE_PROCESSO == "desenvolvimento") {
-        instrucaoSql = `select * from jogos order by idJogos desc;`;
+        instrucaoSql = `select * from jogos where fkCadastro = ${fkCadastro} order by idJogos desc;`;
     } else {
         console.log("\nO AMBIENTE (produção OU desenvolvimento) NÃO FOI DEFINIDO EM app.js\n");
         return
