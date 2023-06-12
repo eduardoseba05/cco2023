@@ -7,14 +7,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>DESEMPENHO</title>
 
-<script src="js/desempenho.js"></script>
+    <script src="js/desempenho.js"></script>
 
     <link rel="stylesheet" href="css/desempenho.css">
     <link rel="stylesheet" href="css/header_footer.css">
-    
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="../css/dashboard.css">
+
 </head>
 
-<body>
+<body onload="obterDadosGrafico()">
     <div class="header">
         <div class="container">
             <ul class="navBar">
@@ -23,7 +25,7 @@
                 <l1><a href="nosso_produto.html">CURIOSIDADES!</a></l1>
                 <l1><a href="quem_somos.html">QUEM SOU?</a></l1>
                 <!-- <l1><a href="desempenho.html">DESEMPENHO!</a></l1> -->
-                <l1><a href="dashboard/dashboard.html">GRÁFICO!</a></l1>
+                <!-- <l1><a href="dashboard/dashboard.html">GRÁFICO!</a></l1> -->
                 <l1><a href="perfil.html">PERFIL!</a></l1>
             </ul>
         </div>
@@ -35,15 +37,21 @@
                 <h1>CALCULE O DESEMPENHO DO SEU TIME!</h1>
                 <input id="ipt_feitos" placeholder="gols feitos:"><br>
                 <input id="ipt_sofridos" placeholder="gols sofridos:"><br>
-                <button onclick="verificar_fut()">futsal</button><br>
-                <button onclick="verificar_soc()">society</button><br>
-                <button onclick="verificar_cam()">campo</button><br>
+                <button onclick="verificar_fut(),cadastrar()">futsal</button><br>
+                <button onclick="verificar_soc(),cadastrar()">society</button><br>
+                <button onclick="verificar_cam(),cadastrar()">campo</button><br>
                 <div id="msg"></div>
                 <div id="msg2"></div>
                 <div id="msg3"></div>
             </div>
+            <div class="grafico" style="background-color: whitesmoke; margin-left: 50px; margin-right: 50px;">
+                <h1>HISTÓRICO DE DESEMPENHO DOS JOGOS!</h1>
+                <canvas id="myChart"></canvas>
+            </div>
+            <script src="../js/dashboard.js"></script>
         </div>
     </div>
+
 
     <div class="footer">
         <h3>linkedin: Eduardo Camargo</h3>
@@ -53,3 +61,133 @@
 </body>
 
 </html>
+<script>
+var fkCadastro = sessionStorage.idCadastro;
+let proximaAtualizacao;
+
+function obterDadosGrafico() {
+
+if (proximaAtualizacao != undefined) {
+    clearTimeout(proximaAtualizacao);
+}
+
+fetch(`/medidas/ultimas`, { cache: 'no-store' }).then(function (response) {
+    if (response.ok) {
+        response.json().then(function (resposta) {
+            console.log(`Dados recebidos: ${JSON.stringify(resposta)}`);
+            resposta.reverse();
+
+            plotarGrafico(resposta);
+
+        });
+    } else {
+        console.error('Nenhum dado encontrado ou erro na API');
+    }
+})
+    .catch(function (error) {
+        console.error(`Erro na obtenção dos dados p/ gráfico: ${error.message}`);
+    });
+}
+
+    function plotarGrafico(resposta) {
+
+        console.log('iniciando plotagem do gráfico...');
+
+        // Criando estrutura para plotar gráfico - labels
+        var labels = [];
+
+        // Criando estrutura para plotar gráfico - dados
+        var dados = {
+            labels: labels,
+            datasets: [
+                {
+                    label: "gols feitos",
+                    backgroundColor: "#0000ff",
+                    borderColor: "#0000ff",
+                    data: [],
+                },
+                
+                {
+                    label: "gols sofridos",
+                    data: [],
+                    backgroundColor: "#ff0000",
+                    borderColor: "#ff0000",
+                }]
+        };
+
+        console.log('----------------------------------------------')
+        console.log('Estes dados foram recebidos pela funcao "obterDadosGrafico" e passados para "plotarGrafico":')
+        console.log(resposta)
+
+        // Inserindo valores recebidos em estrutura para plotar o gráfico
+        for (i = 0; i < resposta.length; i++) {
+            var registro = resposta[i];
+            labels.push(`jogo ${i + 1}`);
+            dados.datasets[0].data.push(registro.gols_feitos);
+            dados.datasets[1].data.push(registro.gols_sofridos);
+
+        }
+
+        console.log('----------------------------------------------')
+        console.log('O gráfico será plotado com os respectivos valores:')
+        console.log('Labels:')
+        console.log(labels)
+        console.log('Dados:')
+        console.log(dados.datasets)
+        console.log('----------------------------------------------')
+
+        myChart.data = dados;
+        myChart.update();
+
+        // Criando estrutura para plotar gráfico - config
+        const config = {
+            type: 'line',
+            data: dados,
+        };
+
+        // Adicionando gráfico criado em div na tela
+        // let myChart = new Chart(
+        //     document.getElementById(`myChartCanvas${idAquario}`),
+        //     config
+        // );
+
+        // setTimeout(() => atualizarGrafico(myChart), 2000);
+    }
+
+    function cadastrar() {
+        fkCadastro = sessionStorage.idCadastro
+        fetch("/medidas/cadastrar", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({
+                        // crie um atributo que recebe o valor recuperado aqui
+                        // Agora vá para o arquivo routes/usuario.js
+    
+                        gols_feitosServer: ipt_feitos.value,
+                        gols_sofridosServer: ipt_sofridos.value,
+                        fkCadastroServer: fkCadastro
+                    })
+                }).then(function (resposta) {
+    
+                    console.log("resposta: ", resposta);
+    
+                    if (resposta.ok) {
+    
+                        alert("Cadastro realizado com sucesso!")
+                        obterDadosGrafico()
+                        ipt_feitos.value = ""
+                        ipt_sofridos.value = ""
+    
+                    } else {
+                        throw ("Houve um erro ao tentar realizar o cadastro!");
+                    }
+                }).catch(function (resposta) {
+                    console.log(`#ERRO: ${resposta}`);
+    
+                });
+    }
+    
+        
+</script>
